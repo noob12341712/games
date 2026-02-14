@@ -45,35 +45,25 @@
       text-align: center;
       font-size: 1.8rem;
     }
-    iframe {
-      width: 100%;
-      height: 700px;
-      border: none;
-      display: block;
-    }
     .launch-area {
-      padding: 25px;
+      padding: 40px 25px;
       background: #2a2a2a;
       text-align: center;
     }
     .offline-button {
-      display: inline-block;
-      margin: 15px 10px;
-      padding: 18px 40px;
+      display: block;
+      margin: 20px auto;
+      padding: 20px 50px;
       background: #4CAF50;
       color: white;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       text-decoration: none;
       border-radius: 10px;
       transition: background 0.3s;
+      max-width: 400px;
     }
     .offline-button:hover {
       background: #45a049;
-    }
-    .fallback-iframe {
-      text-align: center;
-      padding: 15px;
-      background: #333;
     }
     @media (min-width: 1100px) {
       .container {
@@ -82,6 +72,13 @@
       }
       .game-section {
         min-width: 48%;
+      }
+      .offline-button {
+        display: inline-block;
+        margin: 20px 15px;
+      }
+      .launch-area {
+        padding: 30px;
       }
     }
     footer {
@@ -97,35 +94,24 @@
 
   <header>
     <h1>Sandboxels × Eaglercraft</h1>
-    <p>Offline pixel fun + Minecraft blocks – ready in Pigeon Forge! ⛏️🔥</p>
+    <p>Offline only – pixel fun + Minecraft blocks in Pigeon Forge! ⛏️🔥</p>
   </header>
 
   <div class="container">
 
     <div class="game-section">
       <h2>Sandboxels – Falling Sand Simulator</h2>
-
+      
       <div class="launch-area">
-        <a href="sandboxels.html" target="_blank" class="offline-button">Launch Offline Sandboxels</a>
-        <a href="https://sandboxels.r74n.com/" target="_blank" class="offline-button" style="background:#2196F3;">Play Online Version</a>
-      </div>
-
-      <div class="fallback-iframe">
-        <p><em>Online fallback (caches for offline-ish play after first load)</em></p>
-        <iframe
-          src="https://sandboxels.r74n.com/"
-          title="Sandboxels"
-          allowfullscreen
-          loading="lazy"
-        ></iframe>
+        <a href="sandboxels.html" target="_blank" class="offline-button">Launch Sandboxels</a>
       </div>
     </div>
 
     <div class="game-section">
-      <h2>Eaglercraft – Minecraft Offline</h2>
-
+      <h2>Eaglercraft – Minecraft</h2>
+      
       <div class="launch-area">
-        <a href="eaglercraft-offline.html" target="_blank" class="offline-button">Launch Offline Eaglercraft</a>
+        <a href="eaglercraft-offline.html" target="_blank" class="offline-button">Launch Eaglercraft</a>
       </div>
     </div>
 
@@ -133,7 +119,7 @@
 
   <footer>
     Made for Gavin by Grok • Enjoy! 🌲<br>
-    <small>Place sandboxels.html & eaglercraft-offline.html in same folder</small>
+    <small>Place sandboxels.html & eaglercraft-offline.html in the same folder</small>
   </footer>
 
 </body>
