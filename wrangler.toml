@@ -1,5 +1,9 @@
-name = "gavin-game-hub"          # Change this to something unique/lowercase/hyphens (your project name)
-compatibility_date = "2026-02-16"  # Use a recent date like today or later; locks runtime version
+name = "gavin-games-hub"           # change if you want a different URL slug
+compatibility_date = "2026-02-16"   # or today's date or later
 
-assets = { directory = "main" }     # "." means current folder (where index.html lives)
-                                 # If your HTML files are in a subfolder like "public/", use "./public"
+assets = { 
+  directory = "."                   # ← keep this!
+  # Optional nice additions:
+  not_found_handling = "404-page"   # serves your 404.html for missing paths
+  # html_handling = "force-trailing-slash"  # optional, if you want clean URLs
+}
