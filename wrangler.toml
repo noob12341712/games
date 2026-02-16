@@ -1,0 +1,5 @@
+name = "gavin-game-hub"          # Change this to something unique/lowercase/hyphens (your project name)
+compatibility_date = "2026-02-16"  # Use a recent date like today or later; locks runtime version
+
+assets = { directory = "." }     # "." means current folder (where index.html lives)
+                                 # If your HTML files are in a subfolder like "public/", use "./public"
