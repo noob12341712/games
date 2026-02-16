@@ -1,6 +1,0 @@
-name = "gavin-games-hub"
-compatibility_date = "2026-02-16"
-
-[assets]
-directory = "."
-not_found_handling = "404-page"  # optional
