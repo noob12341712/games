@@ -1,9 +1,6 @@
-name = "gavin-games-hub"           # change if you want a different URL slug
-compatibility_date = "2026-02-16"   # or today's date or later
+name = "gavin-games-hub"
+compatibility_date = "2026-02-16"
 
-assets = { 
-  directory = "."                   # ← keep this!
-  # Optional nice additions:
-  not_found_handling = "404-page"   # serves your 404.html for missing paths
-  # html_handling = "force-trailing-slash"  # optional, if you want clean URLs
-}
+[assets]
+directory = "."
+not_found_handling = "404-page"  # optional
