@@ -65,6 +65,20 @@
     .offline-button:hover {
       background: #45a049;
     }
+    footer {
+      text-align: center;
+      padding: 25px;
+      font-size: 0.95rem;
+      color: #bbb;
+      background: #0d0d0d;
+    }
+    footer a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
     @media (min-width: 1100px) {
       .container {
         flex-direction: row;
@@ -80,13 +94,6 @@
       .launch-area {
         padding: 30px;
       }
-    }
-    footer {
-      text-align: center;
-      padding: 25px;
-      font-size: 0.95rem;
-      color: #bbb;
-      background: #0d0d0d;
     }
   </style>
 </head>
@@ -120,16 +127,21 @@
         <a href="mario.html" target="_blank" class="offline-button" rel="noopener noreferrer">Launch Mario</a>
       </div>
     </div>
-    <!-- NEW: Pac-Man -->
     <div class="game-section">
       <h2>Pac-Man</h2>
       <div class="launch-area">
         <a href="pacman.html" target="_blank" class="offline-button" rel="noopener noreferrer">Launch Pac-Man</a>
       </div>
     </div>
+    <div class="game-section">
+      <h2>Drive Mad</h2>
+      <div class="launch-area">
+        <a href="drive-mad.html" target="_blank" class="offline-button" rel="noopener noreferrer">Launch Drive Mad</a>
+      </div>
+    </div>
   </div>
   <footer>
-    <small>buy me a coffee https://www.youtube.com/watch?v=dQw4w9WgXcQ</small>
+    <small>buy me a coffee: <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">click here</a></small>
   </footer>
 </body>
 </html>
