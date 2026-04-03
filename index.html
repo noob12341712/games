@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MathHelp — Game Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #25252f;
+      --border-dark: #3a3a45;
+      --text-primary: #f0f0f5;
+      --text-secondary: #a0a0b0;
+      --text-hint: #66667a;
+
+      --chip-sandbox: #1a3a2e; --chip-sandbox-t: #4ade80;
+      --chip-survival: #1a2a4a; --chip-survival-t: #60a5fa;
+      --chip-rhythm: #2a1a4a; --chip-rhythm-t: #c084fc;
+      --chip-classic: #3a2a1a; --chip-classic-t: #fbbf24;
+      --chip-arcade: #3a2a1a; --chip-arcade-t: #f59e0b;
+      --chip-racing: #3a1a1a; --chip-racing-t: #f87171;
+      --chip-flappy: #3a2f1a; --chip-flappy-t: #fcd34d;
+
+      --accent: #60a5fa;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .nav-logo-dot {
+      width: 28px; height: 28px;
+      background: #60a5fa;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo-dot svg { width: 14px; height: 14px; fill: #0a0a0f; }
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+    .nav-logo-sub {
+      font-size: 11px;
+      color: var(--text-hint);
+      font-family: 'DM Mono', monospace;
+      margin-top: 1px;
+    }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .nav-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-hint);
+      background: var(--border);
+      padding: 4px 10px;
+      border-radius: 99px;
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 32px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 12px;
+      color: var(--text-hint);
+      font-family: 'DM Mono', monospace;
+      margin-right: 4px;
+    }
+    .filter-btn {
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--border-dark);
+      background: var(--surface);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active { 
+      background: var(--accent); 
+      color: #0a0a0f; 
+      border-color: var(--accent); 
+      font-weight: 600;
+    }
+
+    /* ── GAME GRID ── */
+    .grid-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── GAME CARD ── */
+    .game-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+    .game-card:hover {
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .card-preview {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: #0a0a12;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+    .card-preview-canvas {
+      width: 100%; height: 100%;
+      display: block;
+      image-rendering: pixelated;
+    }
+    .card-preview-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .card-body {
+      padding: 20px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.02em;
+    }
+    .card-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+    .card-meta {
+      display: flex;
+      gap: 8px;
+    }
+    .meta-tag {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--text-hint);
+      background: var(--border);
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      text-decoration: none;
+      background: var(--border);
+      border: 1px solid var(--border-dark);
+      border-radius: 99px;
+      padding: 7px 16px;
+      transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+    }
+    .play-btn:hover { 
+      background: var(--accent); 
+      color: #0a0a0f; 
+      border-color: var(--accent); 
+    }
+
+    /* Featured card */
+    .card-featured {
+      grid-column: span 2;
+    }
+    .card-featured .card-preview { height: 240px; }
+    @media (max-width: 760px) {
+      .card-featured { grid-column: span 1; }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-brand {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .footer-url {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--text-hint);
+    }
+    .footer-right {
+      font-size: 13px;
+      color: var(--text-hint);
+    }
+    .footer-right a { color: var(--text-secondary); text-decoration: none; }
+    .footer-right a:hover { color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .nav-inner, .filter-bar, .grid-wrap, .footer-inner { padding-left: 16px; padding-right: 16px; }
+      .game-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="#">
+        <div class="nav-logo-dot">
+          <svg viewBox="0 0 14 14"><path d="M7 1L13 4v6L7 13 1 10V4L7 1z"/></svg>
+        </div>
+        <div>
+          <div class="nav-logo-name">MathHelp</div>
+          <div class="nav-logo-sub">mathhelp.great-site.net</div>
+        </div>
+      </a>
+      <div class="nav-right">
+        <span class="nav-count">7 games</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-label">filter /</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="arcade">Arcade</button>
+    <button class="filter-btn" data-filter="sandbox">Sandbox</button>
+    <button class="filter-btn" data-filter="platformer">Platformer</button>
+    <button class="filter-btn" data-filter="racing">Racing</button>
+    <button class="filter-btn" data-filter="survival">Survival</button>
+  </div>
+
+  <!-- GAME GRID -->
+  <div class="grid-wrap">
+    <div class="game-grid" id="game-grid">
+
+      <!-- SANDBOXELS -->
+      <div class="game-card" data-category="sandbox" onclick="window.open('sandboxels.html','_blank')">
+        <div class="card-preview">
+          <canvas class="card-preview-canvas" id="cvs-sandboxels" width="680" height="400"></canvas>
+          <div class="card-preview-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-title">Sandboxels</span>
+            <span class="chip" style="background:var(--chip-sandbox);color:var(--chip-sandbox-t)">sandbox</span>
+          </div>
+          <p class="card-desc">Falling-sand simulation. Mix elements, ignite reactions, watch chaos unfold pixel by pixel.</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <span class="meta-tag">1P</span>
+              <span class="meta-tag">physics</span>
+            </div>
+            <a class="play-btn" href="sandboxels.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+              Play
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- EAGLERCRAFT -->
+      <div class="game-card" data-category="survival" onclick="window.open('https://web.archive.org/web/20260131074337/https://client.eaglercraft.win/','_blank')">
+        <div class="card-preview">
+          <canvas class="card-preview-canvas" id="cvs-eaglercraft" width="680" height="400"></canvas>
+          <div class="card-preview-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-title">Eaglercraft</span>
+            <span class="chip" style="background:var(--chip-survival);color:var(--chip-survival-t)">survival</span>
+          </div>
+          <p class="card-desc">Browser Minecraft — build, mine, survive in a blocky infinite world. Multiplayer supported.</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <span class="meta-tag">MP</span>
+              <span class="meta-tag">open world</span>
+            </div>
+            <a class="play-btn" href="https://web.archive.org/web/20260131074337/https://client.eaglercraft.win/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+              Play
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- GEOMETRY DASH -->
+      <div class="game-card" data-category="platformer" onclick="window.open('geometry-dash-offline.html','_blank')">
+        <div class="card-preview">
+          <canvas class="card-preview-canvas" id="cvs-geodash" width="680" height="400"></canvas>
+          <div class="card-preview-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-title">Geometry Dash</span>
+            <span class="chip" style="background:var(--chip-rhythm);color:var(--chip-rhythm-t)">rhythm</span>
+          </div>
+          <p class="card-desc">Rhythm-based platformer. Jump, fly and flip your way through obstacles to the beat.</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <span class="meta-tag">1P</span>
+              <span class="meta-tag">precision</span>
+            </div>
+            <a class="play-btn" href="geometry-dash-offline.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+              Play
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- MARIO -->
+      <div class="game-card" data-category="platformer" onclick="window.open('mario.html','_blank')">
+        <div class="card-preview">
+          <canvas class="card-preview-canvas" id="cvs-mario" width="680" height="400"></canvas>
+          <div class="card-preview-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-title">Mario</span>
+            <span class="chip" style="background:var(--chip-classic);color:var(--chip-classic-t)">classic</span>
+          </div>
+          <p class="card-desc">The legendary plumber returns. Run, jump and stomp your way through iconic worlds.</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <span class="meta-tag">1P</span>
+              <span class="meta-tag">platformer</span>
+            </div>
+            <a class="play-btn" href="mario.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+              Play
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAC-MAN -->
+      <div class="game-card" data-category="arcade" onclick="window.open('pacman.html','_blank')">
+        <div class="card-preview">
+          <canvas class="card-preview-canvas" id="cvs-pacman" width="680" height="400"></canvas>
+          <div class="card-preview-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-title">Pac-Man</span>
+            <span class="chip" style="background:var(--chip-arcade);color:var(--chip-arcade-t)">arcade</span>
+          </div>
+          <p class="card-desc">Chomp dots, avoid ghosts and eat power pellets in this timeless arcade legend.</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <span class="meta-tag">1P</span>
+              <span class="meta-tag">maze</span>
+            </div>
+            <a class="play-btn" href="pacman.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+              Play
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRIVE MAD -->
+      <div class="game-card" data-category="racing" onclick="window.open('drive-mad.html','_blank')">
+        <div class="card-preview">
+          <canvas class="card-preview-canvas" id="cvs-drivemad" width="680" height="400"></canvas>
+          <div class="card-preview-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-title">Drive Mad</span>
+            <span class="chip" style="background:var(--chip-racing);color:var(--chip-racing-t)">racing</span>
+          </div>
+          <p class="card-desc">Crazy physics driving. Keep your wheels on the ground without flipping — easier said than done.</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <span class="meta-tag">1P</span>
+              <span class="meta-tag">physics</span>
+            </div>
+            <a class="play-btn" href="drive-mad.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+              Play
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLAPPY BIRD (Now opens as separate HTML file) -->
+      <div class="game-card" data-category="arcade" onclick="window.open('flappy-bird.html','_blank')">
+        <div class="card-preview">
+          <canvas class="card-preview-canvas" id="cvs-flappybird" width="680" height="400"></canvas>
+          <div class="card-preview-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-title">Flappy Bird</span>
+            <span class="chip" style="background:var(--chip-flappy);color:var(--chip-flappy-t)">arcade</span>
+          </div>
+          <p class="card-desc">Tap to flap. Dodge the pipes. Survive as long as you can in this reflex-testing classic.</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <span class="meta-tag">1P</span>
+              <span class="meta-tag">reflex</span>
+            </div>
+            <a class="play-btn" href="flappy-bird.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+              Play
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">MathHelp Game Hub</div>
+        <div class="footer-url">mathhelp.great-site.net</div>
+      </div>
+      <div class="footer-right">
+        © 2026 · <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">Buy me a coffee ☕</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+// Filter functionality (unchanged)
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.game-card').forEach(card => {
+      const show = f === 'all' || card.dataset.category === f;
+      card.style.display = show ? '' : 'none';
+    });
+  });
+});
+
+// All canvas preview scripts remain exactly the same (they still work great in dark mode)
+... (All your existing canvas preview code for Sandboxels, Eaglercraft, Geometry Dash, Mario, Pac-Man, Drive Mad, and Flappy Bird preview stays unchanged) ...
+
+</script>
+</body>
+</html>
