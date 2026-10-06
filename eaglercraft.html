@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eaglercraft — choose a version</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #25252f;
+      --border-dark: #3a3a45;
+      --text-primary: #f0f0f5;
+      --text-secondary: #a0a0b0;
+      --text-hint: #66667a;
+      --chip-survival: #1a2a4a; --chip-survival-t: #60a5fa;
+      --accent: #60a5fa;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .back-link svg { width: 12px; height: 12px; fill: currentColor; }
+
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 32px 8px;
+    }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--chip-survival-t);
+      margin-bottom: 10px;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      color: var(--text-secondary);
+      max-width: 60ch;
+      font-size: 14.5px;
+    }
+
+    .version-list {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 32px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .version-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 24px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .version-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      transform: translateY(-3px);
+    }
+    .version-left { display: flex; flex-direction: column; gap: 6px; }
+    .version-top { display: flex; align-items: center; gap: 12px; }
+    .version-num {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.02em;
+      background: var(--chip-survival);
+      color: var(--chip-survival-t);
+    }
+    .version-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+    .version-meta {
+      display: flex;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .meta-tag {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--text-hint);
+      background: var(--border);
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      background: var(--border);
+      border: 1px solid var(--border-dark);
+      border-radius: 99px;
+      padding: 9px 18px;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .version-card:hover .play-btn {
+      background: var(--accent);
+      color: #0a0a0f;
+      border-color: var(--accent);
+    }
+    .play-btn svg { width: 12px; height: 12px; fill: currentColor; }
+
+    .note {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px 60px;
+      font-size: 12.5px;
+      color: var(--text-hint);
+      font-family: 'DM Mono', monospace;
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner, .hero, .version-list, .note { padding-left: 16px; padding-right: 16px; }
+      .version-card { flex-direction: column; align-items: flex-start; }
+      .play-btn { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="back-link" href="index.html">
+        <svg viewBox="0 0 12 12"><path d="M10 5.25H3.4l3-3-1-1L.5 6l4.9 4.9 1-1-3-3H10v-1.5z"/></svg>
+        Back to all games
+      </a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">survival / open world</div>
+    <h1>Eaglercraft</h1>
+    <p>Browser Minecraft, four ways. Pick the version you want to play — each one runs standalone in your browser, no download needed.</p>
+  </div>
+
+  <div class="version-list">
+
+    <a class="version-card" href="eaglercraft-1.5.2.html">
+      <div class="version-left">
+        <div class="version-top">
+          <span class="version-num">1.5.2</span>
+          <span class="chip">classic</span>
+        </div>
+        <p class="version-desc">The original. Simpler terrain gen and a lighter client — the closest thing to how Eaglercraft started.</p>
+        <div class="version-meta">
+          <span class="meta-tag">MP</span>
+          <span class="meta-tag">lightweight</span>
+        </div>
+      </div>
+      <span class="play-btn">
+        <svg viewBox="0 0 12 12"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+        Play
+      </span>
+    </a>
+
+    <a class="version-card" href="eaglercraft-1.8.8.html">
+      <div class="version-left">
+        <div class="version-top">
+          <span class="version-num">1.8.8</span>
+          <span class="chip">popular</span>
+        </div>
+        <p class="version-desc">The most-played build. Adds combat updates, more blocks, and singleplayer worlds saved right in your browser.</p>
+        <div class="version-meta">
+          <span class="meta-tag">MP</span>
+          <span class="meta-tag">singleplayer</span>
+        </div>
+      </div>
+      <span class="play-btn">
+        <svg viewBox="0 0 12 12"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+        Play
+      </span>
+    </a>
+
+    <a class="version-card" href="eaglercraft-1.12.2.html">
+      <div class="version-left">
+        <div class="version-top">
+          <span class="version-num">1.12.2</span>
+          <span class="chip">feature-rich</span>
+        </div>
+        <p class="version-desc">Lots of content — more blocks, items and biomes, at the cost of needing a bit more from your browser.</p>
+        <div class="version-meta">
+          <span class="meta-tag">MP</span>
+          <span class="meta-tag">open world</span>
+        </div>
+      </div>
+      <span class="play-btn">
+        <svg viewBox="0 0 12 12"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+        Play
+      </span>
+    </a>
+
+    <a class="version-card" href="eaglercraft-26.2.html">
+      <div class="version-left">
+        <div class="version-top">
+          <span class="version-num">26.2</span>
+          <span class="chip">newest</span>
+        </div>
+        <p class="version-desc">The latest version on the list — the most up-to-date game content, and the most demanding on your browser.</p>
+        <div class="version-meta">
+          <span class="meta-tag">MP</span>
+          <span class="meta-tag">open world</span>
+        </div>
+      </div>
+      <span class="play-btn">
+        <svg viewBox="0 0 12 12"><path d="M2 1.5L10 6 2 10.5V1.5z"/></svg>
+        Play
+      </span>
+    </a>
+
+  </div>
+
+  <div class="note">expects eaglercraft-1.5.2.html / eaglercraft-1.8.8.html / eaglercraft-1.12.2.html / eaglercraft-26.2.html alongside this file</div>
+
+</body>
+</html>
